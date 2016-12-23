@@ -2,61 +2,29 @@ import * as React from 'react';
 import { Square } from './Square';
 
 export interface BoardProps {
-  // TODO
+  squares: Array<any>;
+  onClick: Function;
+  status: string;
 }
 
 export interface BoardState {
-  squares: Array<any>;
-  xIsNext: boolean;
+  // TODO
 }
 
 export class Board extends React.Component<BoardProps, BoardState> {
-  constructor() {
-    super();
-    this.state = {
-      // fill() method requires polyfill or ES6 target
-      squares: [
-        null, null, null,
-        null, null, null,
-        null, null, null
-      ],
-      xIsNext: true
-    };
-  }
-  
   renderSquare(i: number) {
     return (
       <Square
-        value={this.state.squares[i]}
-        onClick={() => this.handleClick(i)}
+        value={this.props.squares[i]}
+        onClick={() => this.props.onClick(i)}
       />
     );
   }
 
-  handleClick(i: number) {
-    const squares = this.state.squares.slice();
-    if (calculateWinner(squares) || squares[i]) {
-      return;
-    }
-    squares[i] = this.state.xIsNext ? 'X' : 'O';
-    this.setState({
-      squares: squares,
-      xIsNext: !this.state.xIsNext
-    });
-  }
-
   render() {
-    const winner = calculateWinner(this.state.squares);
-    let status: string;
-    if (winner) {
-      status = `Winner: ${winner}`;
-    } else {
-      status = `Next player: ${this.state.xIsNext ? 'X' : 'O'}`;
-    }
-
     return (
       <div>
-        <div className="status">{status}</div>
+        <div className="status">{this.props.status}</div>
         <div className="board-row">
             {this.renderSquare(0)}
             {this.renderSquare(1)}
@@ -74,28 +42,5 @@ export class Board extends React.Component<BoardProps, BoardState> {
         </div>
       </div>      
     );
-  }
-}
-
-function calculateWinner(squares: Array<any>) {
-  const lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6]
-  ];
-  for (let i = 0; i < lines.length; i++) {
-    const [a, b, c] = lines[i];
-    if (
-      squares[a] && squares[a] === 
-      squares[b] && squares[a] ===
-      squares[c]
-    ) {
-      return squares[a];
-    }
   }
 }
