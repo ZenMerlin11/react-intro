@@ -1,25 +1,18 @@
 import * as React from 'react';
 
 export interface SquareProps {
-  value: number
+  value: number;
+  onClick: any;
 }
 
 export interface SquareState {
-  value: any
+  value: any;
 }
 
-export class Square extends React.Component<SquareProps, SquareState> {
-  constructor() {
-    super();
-    this.state = {
-      value: null
-    };
-  }
-  render() {
-    return (
-      <button className="square" onClick={() => this.setState({value: 'X'})}>
-        {this.state.value}
-      </button>
-    );
-  }
+export function Square(props: SquareProps) {
+  return (
+    <button className="square" onClick={() => props.onClick()}>
+      {props.value}
+    </button>
+  );
 }
